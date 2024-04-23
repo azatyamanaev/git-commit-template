@@ -1,0 +1,18 @@
+<idea-plugin>
+    <id>com.myplugin</id>
+    <name>My IntelliJ Plugin</name>
+    <version>1.0</version>
+    <vendor email="your.email@example.com">Your Name</vendor>
+
+    <description>
+        Плагин для автоматической вставки шаблона в сообщение о коммите в Git.
+    </description>
+
+    <depends>Git</depends>
+
+    <actions>
+        <action id="GitCommitTemplateAction" class="ru.kfu.gitcommittemplate.GitCommitTemplateAction" text="Insert Commit Template">
+            <add-to-group group-id="Vcs.Commit.Message.Popup" anchor="first"/>
+        </action>
+    </actions>
+</idea-plugin>
