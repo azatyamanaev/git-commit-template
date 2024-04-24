@@ -51,6 +51,7 @@ public class AppSettingsConfigurable implements Configurable {
                 settings.templates.put(template.getName(), template);
             }
         }
+        settings.params.clear();
         for (Argument argument : settingsComponent.getParamsModel().rows) {
             if (!settings.params.containsKey(argument.getName())) {
                 settings.params.put(argument.getName(), argument.getValue());

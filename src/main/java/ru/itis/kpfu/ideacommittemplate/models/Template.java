@@ -18,10 +18,11 @@ public class Template {
     private String content;
 
     public String fillContent(AppSettingsState settingsState) {
+        String res = new String(content);
         for (Map.Entry<String, String> entry : settingsState.params.entrySet()) {
-            content = content.replace("$" + entry.getKey(), entry.getKey() + " - " + entry.getValue());
+            res = res.replace("$" + entry.getKey(), entry.getKey() + " - " + entry.getValue());
         }
-        return content;
+        return res;
     }
 
     @Override
