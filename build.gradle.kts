@@ -1,12 +1,17 @@
 plugins {
     id("java")
     id("org.jetbrains.intellij") version "1.17.2"
+    id("io.franzbecker.gradle-lombok") version "5.0.0"
 }
 
 group =
     "ru.itis.kpfu"
 version =
     "1.0.0"
+
+lombok {
+    version ="1.18.22"
+}
 
 repositories {
     mavenCentral()
@@ -23,7 +28,7 @@ intellij {
     ) // Target IDE Platform
 
     plugins.set(
-        listOf(/* Plugin Dependencies */)
+        listOf()
     )
 }
 

@@ -35,24 +35,14 @@
     <extensions
             defaultExtensionNs="com.intellij">
 
+        <applicationConfigurable parentId="tools" instance="ru.itis.kpfu.ideacommittemplate.config.AppSettingsConfigurable"
+                                 id="ru.itis.kpfu.ideacommittemplate.config.AppSettingsConfigurable"
+                                 displayName="Git Commit Templates"/>
+
+        <applicationService serviceImplementation="ru.itis.kpfu.ideacommittemplate.config.AppSettingsState"/>
     </extensions>
 
     <actions>
-        <action
-                id="StackOverflow.AskQuestion.ToolsMenu"
-                class="ru.itis.kpfu.ideacommittemplate.AskQuestionAction"
-                text="Ask Question on Stack Overflow11"
-                description="Ask a Question on Stack Overflow">
-            <add-to-group group-id="ToolsMenu" anchor="last"/>
-        </action>
-        <action
-                id="StackOverflow.Search.Editor"
-                class="ru.itis.kpfu.ideacommittemplate.SearchAction"
-                text="Search on Stack Overflow"
-                description="Search on Stack Overflow">
-            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
-        </action>
-
         <action
                 id="GitCommitTemplateAction"
                 class="ru.itis.kpfu.ideacommittemplate.GitCommitTemplateAction"
