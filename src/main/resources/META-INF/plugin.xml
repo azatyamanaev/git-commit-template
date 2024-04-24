@@ -13,16 +13,33 @@
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
     <vendor email="iamanaev2001@gmail.com"
-            url="https://kpfu.ru">Itis </vendor>
+            url="https://kpfu.ru">
+        Itis
+    </vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
-    <description>
-        <![CDATA[
-        Plugin that enables auto completing commit messages.<br>
-
-]]></description>
+    <description><![CDATA[
+        <br>
+        Plugin that enables setting templates for commit messages.
+        <br>
+        <a href="https://github.com/azatyamanaev/idea-commit-template">GitHub</a>
+        <br>
+        <br>
+        <b>Features</b>
+        <br>
+        <ul>
+           <li>Set templates for commit messages</li>
+           <li>Set params with values that will be inserted into templates</li>
+           <li>Insert template text when commiting to Git</li>
+         </ul>
+         <br>
+         <br>
+        <i>Compiled with Java 17</i>
+        <br>
+        <i>Compatible with IntelliJ Ultimate and Community editions versions 2023.2.5 and later</i>
+        ]]></description>
 
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
@@ -35,11 +52,14 @@
     <extensions
             defaultExtensionNs="com.intellij">
 
-        <applicationConfigurable parentId="tools" instance="ru.itis.kpfu.ideacommittemplate.config.AppSettingsConfigurable"
-                                 id="ru.itis.kpfu.ideacommittemplate.config.AppSettingsConfigurable"
-                                 displayName="Git Commit Templates"/>
+        <applicationConfigurable
+                parentId="tools"
+                instance="ru.itis.kpfu.ideacommittemplate.config.AppSettingsConfigurable"
+                id="ru.itis.kpfu.ideacommittemplate.config.AppSettingsConfigurable"
+                displayName="Git Commit Templates"/>
 
-        <applicationService serviceImplementation="ru.itis.kpfu.ideacommittemplate.config.AppSettingsState"/>
+        <applicationService
+                serviceImplementation="ru.itis.kpfu.ideacommittemplate.config.AppSettingsState"/>
     </extensions>
 
     <actions>
@@ -47,7 +67,8 @@
                 id="GitCommitTemplateAction"
                 class="ru.itis.kpfu.ideacommittemplate.GitCommitTemplateAction"
                 text="Insert Commit Template">
-            <add-to-group group-id="Vcs.MessageActionGroup"/>
+            <add-to-group
+                    group-id="Vcs.MessageActionGroup"/>
         </action>
     </actions>
 </idea-plugin>
