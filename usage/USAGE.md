@@ -19,3 +19,4 @@
    ![choose template](https://github.com/azatyamanaev/git-commit-template/assets/49018424/95a8fa20-940c-4d4b-9546-60f0de6a09c0)
 
 3. При выборе одного из шаблонов и нажатия Select шаблон будет вставлен как сообщение коммита
+![inserted template](https://github.com/azatyamanaev/git-commit-template/assets/49018424/322b5653-8abf-4d5b-a5f8-bd4e14894fdc)
