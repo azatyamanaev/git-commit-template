@@ -9,6 +9,7 @@ import io.ktor.util.pipeline.Pipeline;
 import com.intellij.openapi.options.Configurable;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
+import ru.itis.kpfu.ideacommittemplate.models.Argument;
 import ru.itis.kpfu.ideacommittemplate.models.Template;
 
 public class AppSettingsConfigurable implements Configurable {
@@ -33,7 +34,7 @@ public class AppSettingsConfigurable implements Configurable {
     @Override
     public JComponent createComponent() {
         settingsComponent = new AppSettingsComponent();
-        return settingsComponent.getPanel();
+        return settingsComponent.getTabs();
     }
 
     @Override
@@ -50,12 +51,17 @@ public class AppSettingsConfigurable implements Configurable {
                 settings.templates.put(template.getName(), template);
             }
         }
+        for (Argument argument : settingsComponent.getParamsModel().rows) {
+            if (!settings.params.containsKey(argument.getName())) {
+                settings.params.put(argument.getName(), argument.getValue());
+            }
+        }
     }
 
     @Override
     public void reset() {
         AppSettingsState settings = AppSettingsState.getInstance();
-        settingsComponent.updateContent(settings.templates.values().stream().toList());
+        settingsComponent.updateContent(settings);
     }
 
     private void updatePipelines(AppSettingsState settings) {

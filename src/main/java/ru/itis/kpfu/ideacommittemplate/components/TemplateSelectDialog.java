@@ -3,20 +3,29 @@ package ru.itis.kpfu.ideacommittemplate.components;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.Popup;
 
 import com.github.weisj.jsvg.D;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.openapi.ui.messages.MessageDialog;
+import com.intellij.openapi.ui.popup.Balloon;
+import com.intellij.openapi.ui.popup.BalloonBuilder;
+import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.vcs.CommitMessageI;
 import com.intellij.ui.CollectionListModel;
+import com.intellij.ui.awt.RelativePoint;
+import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.util.ui.JBUI;
+import com.thaiopensource.relaxng.edit.Component;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,6 +39,7 @@ public class TemplateSelectDialog extends DialogWrapper {
     private JBList<Template> namesList;
     private int selectedIndex;
     private CommitMessageI commitMessageI;
+    private final JBPopupFactory popupFactory = JBPopupFactory.getInstance();
 
     @Getter
     private final Project project;
@@ -67,6 +77,16 @@ public class TemplateSelectDialog extends DialogWrapper {
                 }
             }
         });
+        namesList.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                int index = namesList.locationToIndex(e.getPoint());
+                if (index > -1) {
+                    namesList.setToolTipText(namesList.getModel().getElementAt(index).getContent());
+                }
+            }
+        });
+
         namesList.setMinimumSize(new Dimension(200, 480));
 
         JBScrollPane namesPane = new JBScrollPane(namesList);
@@ -81,7 +101,7 @@ public class TemplateSelectDialog extends DialogWrapper {
     @Override
     protected void doOKAction() {
         if (commitMessageI != null && project != null) {
-            commitMessageI.setCommitMessage(((Template) namesList.getModel().getElementAt(selectedIndex)).getContent());
+            commitMessageI.setCommitMessage(namesList.getModel().getElementAt(selectedIndex).fillContent(AppSettingsState.getInstance()));
         }
         super.close(OK_EXIT_CODE);
     }
