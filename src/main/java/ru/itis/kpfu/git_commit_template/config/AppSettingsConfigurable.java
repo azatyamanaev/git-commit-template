@@ -1,10 +1,7 @@
 package ru.itis.kpfu.git_commit_template.config;
 
-import java.util.LinkedHashMap;
-
 import javax.swing.JComponent;
 
-import io.ktor.util.pipeline.Pipeline;
 import com.intellij.openapi.options.Configurable;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;

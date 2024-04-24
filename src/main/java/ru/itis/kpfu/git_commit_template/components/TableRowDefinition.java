@@ -2,11 +2,6 @@ package ru.itis.kpfu.git_commit_template.components;
 
 import java.util.function.Function;
 
-/**
- * 21.05.2022
- *
- * @author Azat Yamanaev
- */
 public class TableRowDefinition<T> {
 
     public String title;
