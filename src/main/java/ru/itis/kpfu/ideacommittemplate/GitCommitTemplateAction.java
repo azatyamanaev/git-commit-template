@@ -10,10 +10,9 @@ import com.intellij.openapi.vcs.CommitMessageI;
 import com.intellij.openapi.vcs.VcsDataKeys;
 import com.intellij.openapi.vcs.ui.Refreshable;
 import org.jetbrains.annotations.NotNull;
+import ru.itis.kpfu.ideacommittemplate.components.TemplateSelectDialog;
 
 public class GitCommitTemplateAction extends AnAction {
-
-    private static final String TEMPLATE = "<Task number> <Description>\nChanges:\n- ";
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
@@ -24,8 +23,7 @@ public class GitCommitTemplateAction extends AnAction {
         final CommitMessageI commitMessageI =
                 (panel instanceof CommitMessageI) ? (CommitMessageI) panel : VcsDataKeys.COMMIT_MESSAGE_CONTROL.getData(dc);
 
-        if (commitMessageI != null && project != null) {
-           commitMessageI.setCommitMessage(TEMPLATE);
-        }
+        TemplateSelectDialog templateSelectDialog = new TemplateSelectDialog(project, commitMessageI);
+        templateSelectDialog.show();
     }
 }
