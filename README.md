@@ -18,7 +18,7 @@
 3. Создать конфигурацию плагина для запуска кода
 - Run -> Edit Configurations... -> Add -> Gradle
 - Задать имя конфигурации(например, *Run plugin*)
-- Указать Gradle проект idea-commit-template
+- Указать Gradle проект git-commit-template
 - В текстовом поле Run написать команду runIde
 4. Запустить плагин выбрав Run -> Run plugin
 
