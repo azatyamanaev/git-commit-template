@@ -1,4 +1,4 @@
-# idea-commit-template
+# git-commit-template
 
 Проект представляет из себя плагин для Intellij Idea, позволяющий создавать шаблоны для сообщений коммитов в Git. Он совместим с версиями Intellij Idea Community и Ultimate(2023.2.5+). 
 
