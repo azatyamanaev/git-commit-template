@@ -42,3 +42,7 @@
 
 2. При нажатии на нее откроется окно со списком указанных в настройках шаблонов
 ![choose template](https://github.com/azatyamanaev/git-commit-template/assets/49018424/95a8fa20-940c-4d4b-9546-60f0de6a09c0)
+
+3. При выборе одного из шаблонов и нажатия Select шаблон будет вставлен как сообщение коммита
+![inserted template](https://github.com/azatyamanaev/git-commit-template/assets/49018424/252dc9e3-b4af-4129-9f32-013de5f54429)
+
