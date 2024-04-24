@@ -2,7 +2,7 @@
 <idea-plugin>
     <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
     <id>
-        ru.itis.kpfu.idea-commit-template
+        ru.itis.kpfu.git-commit-template
     </id>
 
     <!-- Public plugin name should be written in Title Case.
