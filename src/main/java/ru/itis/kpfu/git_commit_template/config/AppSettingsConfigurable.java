@@ -64,16 +64,6 @@ public class AppSettingsConfigurable implements Configurable {
         settingsComponent.updateContent(settings);
     }
 
-    private void updatePipelines(AppSettingsState settings) {
-        LinkedHashMap<Integer, LinkedHashMap<Integer, Pipeline>> map = new LinkedHashMap<>();
-
-//        settings.projects.keySet().forEach(id -> {
-//            map.put(id, (LinkedHashMap<Integer, Pipeline>) Utils.map(GitlabAPI.getProjectPipelines(id)));
-//        });
-//        settings.pipelines = map;
-
-    }
-
     @Override
     public void disposeUIResources() {
         settingsComponent = null;
