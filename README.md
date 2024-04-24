@@ -17,10 +17,18 @@
 - В выпадающем списке SDK выбрать установленную JDK 17
 3. Создать конфигурацию плагина для запуска кода
 - Run -> Edit Configurations... -> Add -> Gradle
-- Задать имя конфигурации(пример Run plugin)
+- Задать имя конфигурации(например, *Run plugin*)
 - Указать Gradle проект idea-commit-template
 - В текстовом поле Run написать команду runIde
 4. Запустить плагин выбрав Run -> Run plugin
+
+# Установка через JAR-файл
+1. Скачать последнюю версию плагина из [релизов](https://github.com/azatyamanaev/git-commit-template/releases) в репозитории
+2. Запустить IntelliJ IDEA
+3. Зайти в File -> Settings -> Plugins
+4. Нажать на шестеренку рядом с вкладкой Installed и выбрать пункт *Install from Disk...*
+5. Указать путь до скачанного JAR-файла
+6. Перезапустить IntelliJ IDEA
 
 # Использование
 
