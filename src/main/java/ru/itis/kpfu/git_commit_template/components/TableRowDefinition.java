@@ -1,4 +1,4 @@
-package ru.itis.kpfu.ideacommittemplate.components;
+package ru.itis.kpfu.git_commit_template.components;
 
 import java.util.function.Function;
 

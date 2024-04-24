@@ -1,4 +1,4 @@
-package ru.itis.kpfu.ideacommittemplate.config;
+package ru.itis.kpfu.git_commit_template.config;
 
 import java.awt.Dimension;
 import java.awt.event.FocusEvent;
@@ -29,9 +29,9 @@ import com.intellij.util.ui.FormBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
-import ru.itis.kpfu.ideacommittemplate.components.ArgumentTableModel;
-import ru.itis.kpfu.ideacommittemplate.models.Argument;
-import ru.itis.kpfu.ideacommittemplate.models.Template;
+import ru.itis.kpfu.git_commit_template.components.ArgumentTableModel;
+import ru.itis.kpfu.git_commit_template.models.Argument;
+import ru.itis.kpfu.git_commit_template.models.Template;
 
 @Getter
 @Setter

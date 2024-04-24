@@ -1,4 +1,4 @@
-package ru.itis.kpfu.ideacommittemplate.models;
+package ru.itis.kpfu.git_commit_template.models;
 
 import java.util.Map;
 
@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.itis.kpfu.ideacommittemplate.config.AppSettingsState;
+import ru.itis.kpfu.git_commit_template.config.AppSettingsState;
 
 @Getter
 @Setter

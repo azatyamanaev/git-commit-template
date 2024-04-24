@@ -1,4 +1,4 @@
-package ru.itis.kpfu.ideacommittemplate.config;
+package ru.itis.kpfu.git_commit_template.config;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -12,8 +12,8 @@ import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.itis.kpfu.ideacommittemplate.models.Argument;
-import ru.itis.kpfu.ideacommittemplate.models.Template;
+import ru.itis.kpfu.git_commit_template.models.Argument;
+import ru.itis.kpfu.git_commit_template.models.Template;
 
 @State(
         name = "AppSettingsState",

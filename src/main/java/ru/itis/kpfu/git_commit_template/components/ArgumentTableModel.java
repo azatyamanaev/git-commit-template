@@ -1,11 +1,11 @@
-package ru.itis.kpfu.ideacommittemplate.components;
+package ru.itis.kpfu.git_commit_template.components;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
-import ru.itis.kpfu.ideacommittemplate.models.Argument;
+import ru.itis.kpfu.git_commit_template.models.Argument;
 
 public class ArgumentTableModel extends DefaultTableModel {
 

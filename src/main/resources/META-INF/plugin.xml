@@ -54,18 +54,18 @@
 
         <applicationConfigurable
                 parentId="tools"
-                instance="ru.itis.kpfu.ideacommittemplate.config.AppSettingsConfigurable"
-                id="ru.itis.kpfu.ideacommittemplate.config.AppSettingsConfigurable"
+                instance="ru.itis.kpfu.git_commit_template.config.AppSettingsConfigurable"
+                id="ru.itis.kpfu.git_commit_template.config.AppSettingsConfigurable"
                 displayName="Git Commit Templates"/>
 
         <applicationService
-                serviceImplementation="ru.itis.kpfu.ideacommittemplate.config.AppSettingsState"/>
+                serviceImplementation="ru.itis.kpfu.git_commit_template.config.AppSettingsState"/>
     </extensions>
 
     <actions>
         <action
                 id="GitCommitTemplateAction"
-                class="ru.itis.kpfu.ideacommittemplate.GitCommitTemplateAction"
+                class="ru.itis.kpfu.git_commit_template.GitCommitTemplateAction"
                 text="Insert Commit Template">
             <add-to-group
                     group-id="Vcs.MessageActionGroup"/>

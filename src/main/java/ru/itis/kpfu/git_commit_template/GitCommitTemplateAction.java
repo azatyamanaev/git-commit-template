@@ -1,4 +1,4 @@
-package ru.itis.kpfu.ideacommittemplate;
+package ru.itis.kpfu.git_commit_template;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -10,7 +10,7 @@ import com.intellij.openapi.vcs.CommitMessageI;
 import com.intellij.openapi.vcs.VcsDataKeys;
 import com.intellij.openapi.vcs.ui.Refreshable;
 import org.jetbrains.annotations.NotNull;
-import ru.itis.kpfu.ideacommittemplate.components.TemplateSelectDialog;
+import ru.itis.kpfu.git_commit_template.components.TemplateSelectDialog;
 
 public class GitCommitTemplateAction extends AnAction {
 

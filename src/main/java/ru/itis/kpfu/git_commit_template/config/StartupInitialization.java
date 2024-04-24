@@ -1,4 +1,4 @@
-package ru.itis.kpfu.ideacommittemplate.config;
+package ru.itis.kpfu.git_commit_template.config;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;

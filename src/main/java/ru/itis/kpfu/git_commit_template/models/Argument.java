@@ -1,4 +1,4 @@
-package ru.itis.kpfu.ideacommittemplate.models;
+package ru.itis.kpfu.git_commit_template.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
