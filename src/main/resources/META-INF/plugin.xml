@@ -8,13 +8,13 @@
     <!-- Public plugin name should be written in Title Case.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
     <name>
-        Idea-commit-template
+        Git-commit-template
     </name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
     <vendor email="iamanaev2001@gmail.com"
             url="https://kpfu.ru">
-        Itis
+        KPFU ITIS
     </vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
