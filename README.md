@@ -24,4 +24,4 @@
 
 # Использование
 
-Инструкция к использованию располагается в папке [usage](https://github.com/azatyamanaev/git-commit-template/usage)
+Инструкция к использованию располагается в папке [usage](https://github.com/azatyamanaev/git-commit-template/tree/main/usage)
