@@ -18,10 +18,9 @@
   ![Screenshot 2024-04-30 142008](https://github.com/azatyamanaev/git-commit-template/assets/49018424/7d9caf54-18bf-425a-9954-f25815a948f4)
 
 2. При нажатии на нее откроется окно со списком указанных в настройках шаблонов
-  ![Screenshot 2024-04-30 142103](https://github.com/azatyamanaev/git-commit-template/assets/49018424/e3effcd9-d3f1-4858-81e5-46151e6ad920)
-
-
-3. При выборе одного из шаблонов и нажатия Select шаблон будет вставлен как сообщение коммита
   ![Screenshot 2024-04-30 142712](https://github.com/azatyamanaev/git-commit-template/assets/49018424/591718e5-582f-4617-94c5-42ecfb3e96af)
+
+4. При выборе одного из шаблонов и нажатия Select шаблон будет вставлен как сообщение коммита
+  ![Screenshot 2024-04-30 142103](https://github.com/azatyamanaev/git-commit-template/assets/49018424/e3effcd9-d3f1-4858-81e5-46151e6ad920)
 
 
