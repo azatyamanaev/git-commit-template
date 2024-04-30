@@ -1,5 +1,6 @@
 package ru.itis.kpfu.git_commit_template.config;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -14,6 +15,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import com.intellij.icons.AllIcons;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.VerticalFlowLayout;
 import com.intellij.ui.CollectionListModel;
 import com.intellij.ui.DocumentAdapter;
 import com.intellij.ui.JBSplitter;
@@ -32,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.itis.kpfu.git_commit_template.components.ArgumentTableModel;
 import ru.itis.kpfu.git_commit_template.models.Argument;
 import ru.itis.kpfu.git_commit_template.models.Template;
+import ru.itis.kpfu.git_commit_template.util.SystemHelper;
 
 @Getter
 @Setter
@@ -44,31 +50,41 @@ public class AppSettingsComponent {
     private JBTextArea textArea;
     private int selectedIndex;
 
-    private final JPanel paramsPanel;
-    private JBTable paramsTable;
-    private ArgumentTableModel paramsModel;
+    private final JPanel localArgsPanel;
+    private JBTable localArgsTable;
+    private ArgumentTableModel localArgsModel;
 
+    private final JPanel systemArgsPanel;
+    private JBTable systemArgsTable;
+    private ArgumentTableModel systemArgsModel;
 
+    private final AppSettingsState settingsState;
     private boolean modified = false;
 
     public AppSettingsComponent() {
 
-        AppSettingsState settingsState = AppSettingsState.getInstance();
+        this.settingsState = AppSettingsState.getInstance();
+        this.settingsState.setSystemArgs();
+
         tabs = new JBTabbedPane();
         templatesPanel = FormBuilder.createFormBuilder()
                                     .addComponent(createTemplateList(settingsState
-                                            .templates.values().stream().toList()), 1)
-                                    .addComponentFillVertically(new JPanel(), 0)
+                                            .templates.values().stream().toList()), 0)
+                                    .addComponentFillVertically(new JPanel(), 1)
                                     .getPanel();
 
-        paramsModel = new ArgumentTableModel();
-        paramsPanel = FormBuilder.createFormBuilder()
-                .addComponent(createArgPanel(settingsState.getArgumentList()))
-                                 .addComponentFillVertically(new JPanel(), 0)
-                                 .getPanel();
+        localArgsModel = new ArgumentTableModel();
+        localArgsPanel = new JPanel(new BorderLayout());
+        localArgsPanel.add(createLocalArgsPanel(SystemHelper.getArgumentList(settingsState.localArgs)), BorderLayout.CENTER);
+
+        systemArgsModel = new ArgumentTableModel();
+        systemArgsPanel = FormBuilder.createFormBuilder()
+                                     .addComponentFillVertically(createSystemArgsPanel(SystemHelper.getArgumentList(settingsState.sysArgs)), 0)
+                                     .getPanel();
 
         tabs.add("templates", templatesPanel);
-        tabs.add("parameters", paramsPanel);
+        tabs.add("local args", localArgsPanel);
+        tabs.add("system args", systemArgsPanel);
     }
 
     public JPanel createTemplateList(List<Template> templates) {
@@ -186,29 +202,56 @@ public class AppSettingsComponent {
         return splitter;
     }
 
-    public JPanel createArgPanel(List<Argument> arguments) {
-        paramsTable = new JBTable(paramsModel);
-        ArgumentTableModel.updateTable(paramsModel, arguments);
-        paramsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        paramsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        paramsTable.setCellSelectionEnabled(true);
-        paramsTable.setIntercellSpacing(new Dimension(5, 0));
+    public JPanel createLocalArgsPanel(List<Argument> arguments) {
+        localArgsTable = new JBTable(localArgsModel);
+        ArgumentTableModel.updateTable(localArgsModel, arguments);
+        localArgsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        localArgsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        localArgsTable.setCellSelectionEnabled(true);
+        localArgsTable.setIntercellSpacing(new Dimension(5, 0));
 
-        ToolbarDecorator decorator = ToolbarDecorator.createDecorator(paramsTable);
+        ToolbarDecorator decorator = ToolbarDecorator.createDecorator(localArgsTable);
         decorator.setAddAction(a -> {
-            paramsModel.rows.add(new Argument("argument", "value"));
+            localArgsModel.rows.add(new Argument("argument", "value"));
         });
         decorator.setRemoveAction(a -> {
-            paramsModel.rows.remove(paramsTable.getSelectedRow());
+            localArgsModel.rows.remove(localArgsTable.getSelectedRow());
         });
 
+        JBScrollPane paramsPane = new JBScrollPane(localArgsTable);
+        paramsPane.setVisible(true);
 
-        JBScrollPane paramsPane = new JBScrollPane(paramsTable);
+
+        final JPanel panel = new JPanel(new BorderLayout());
+        panel.add(decorator.createPanel(), BorderLayout.NORTH);
+        panel.add(paramsPane, BorderLayout.CENTER);
+        return panel;
+    }
+
+    public JPanel createSystemArgsPanel(List<Argument> arguments) {
+        systemArgsTable = new JBTable(systemArgsModel);
+        ArgumentTableModel.updateTable(systemArgsModel, arguments);
+        systemArgsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        systemArgsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        systemArgsTable.setCellSelectionEnabled(false);
+        systemArgsTable.setFocusable(false);
+        systemArgsTable.setIntercellSpacing(new Dimension(5, 0));
+
+        ToolbarDecorator decorator = ToolbarDecorator.createDecorator(systemArgsTable);
+        decorator.setAddIcon(AllIcons.Actions.Refresh);
+        decorator.setAddActionName("Refresh");
+        decorator.setAddAction(a -> {
+            settingsState.setSystemArgs();
+            ArgumentTableModel.updateTable(systemArgsModel, SystemHelper.getArgumentList(settingsState.sysArgs));
+        });
+        decorator.disableRemoveAction();
+
+        JBScrollPane paramsPane = new JBScrollPane(systemArgsTable);
         paramsPane.setPreferredSize(new Dimension(700, 370));
 
         return FormBuilder.createFormBuilder()
                           .addComponent(decorator.createPanel(), 1)
-                          .addComponentFillVertically(paramsPane, 2)
+                          .addComponent(paramsPane, 2)
                           .getPanel();
     }
 
@@ -219,17 +262,18 @@ public class AppSettingsComponent {
         ((CollectionListModel<Template>) namesList.getModel()).removeAll();
         ((CollectionListModel<Template>) namesList.getModel()).addAll(0, settings.templates.values().stream().toList());
         namesList.setSelectedIndex(0);
-        Template selection = (Template) namesList.getModel().getElementAt(0);
+        Template selection = namesList.getModel().getElementAt(0);
         name.setText(selection.getName());
         textArea.setText(selection.getContent());
 
-        ArgumentTableModel.updateTable(paramsModel, settings.getArgumentList());
+        ArgumentTableModel.updateTable(localArgsModel, SystemHelper.getArgumentList(settings.localArgs));
+        ArgumentTableModel.updateTable(systemArgsModel, SystemHelper.getArgumentList(settings.sysArgs));
     }
 
     public List<Template> getTemplates() {
         List<Template> templates = new ArrayList<>();
         for (int i = 0; i < namesList.getItemsCount(); i++) {
-            templates.add((Template) namesList.getModel().getElementAt(i));
+            templates.add(namesList.getModel().getElementAt(i));
         }
         return templates;
     }

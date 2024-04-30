@@ -29,6 +29,7 @@ public class AppSettingsConfigurable implements Configurable {
     @Nullable
     @Override
     public JComponent createComponent() {
+
         settingsComponent = new AppSettingsComponent();
         return settingsComponent.getTabs();
     }
@@ -40,29 +41,35 @@ public class AppSettingsConfigurable implements Configurable {
 
     @Override
     public void apply() {
-        AppSettingsState settings = AppSettingsState.getInstance();
+        AppSettingsState settings = getSettings();
         settings.templates.clear();
         for (Template template : settingsComponent.getTemplates()) {
             if (!settings.templates.containsKey(template.getName())) {
                 settings.templates.put(template.getName(), template);
             }
         }
-        settings.params.clear();
-        for (Argument argument : settingsComponent.getParamsModel().rows) {
-            if (!settings.params.containsKey(argument.getName())) {
-                settings.params.put(argument.getName(), argument.getValue());
+
+        settings.localArgs.clear();
+        for (Argument argument : settingsComponent.getLocalArgsModel().rows) {
+            if (!settings.localArgs.containsKey(argument.getName())) {
+                settings.localArgs.put(argument.getName(), argument.getValue());
             }
         }
     }
 
     @Override
     public void reset() {
-        AppSettingsState settings = AppSettingsState.getInstance();
+        AppSettingsState settings = getSettings();
+        settings.setSystemArgs();
         settingsComponent.updateContent(settings);
     }
 
     @Override
     public void disposeUIResources() {
         settingsComponent = null;
+    }
+
+    private AppSettingsState getSettings() {
+        return AppSettingsState.getInstance();
     }
 }

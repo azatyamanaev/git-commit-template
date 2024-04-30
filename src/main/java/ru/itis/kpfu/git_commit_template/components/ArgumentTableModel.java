@@ -59,10 +59,7 @@ public class ArgumentTableModel extends DefaultTableModel {
 
     public static void updateTable(ArgumentTableModel tableModel, List<Argument> arguments) {
         tableModel.rows.clear();
-        if (arguments != null && arguments.size() > 0) {
-//            if (tableModel.getRowCount() < arguments.size()) {
-//                tableModel.setRowCount(80);
-//            }
+        if (arguments != null && !arguments.isEmpty()) {
             tableModel.rows.addAll(arguments);
         }
     }

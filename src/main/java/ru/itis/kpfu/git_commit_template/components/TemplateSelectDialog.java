@@ -10,7 +10,6 @@ import javax.swing.ListSelectionModel;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.vcs.CommitMessageI;
 import com.intellij.ui.CollectionListModel;
 import com.intellij.ui.components.JBList;
@@ -25,8 +24,8 @@ public class TemplateSelectDialog extends DialogWrapper {
     private JPanel centerPanel;
     private JBList<Template> namesList;
     private int selectedIndex;
-    private CommitMessageI commitMessageI;
-    private final JBPopupFactory popupFactory = JBPopupFactory.getInstance();
+    private final CommitMessageI commitMessageI;
+    private final AppSettingsState settingsState;
 
     @Getter
     private final Project project;
@@ -38,6 +37,8 @@ public class TemplateSelectDialog extends DialogWrapper {
         super(project);
         this.project = project;
         this.commitMessageI = commitMessageI;
+        this.settingsState = AppSettingsState.getInstance();
+        this.settingsState.setSystemArgs();
 
         super.setTitle("Saved templates");
         super.setOKButtonText("Select");
@@ -52,7 +53,7 @@ public class TemplateSelectDialog extends DialogWrapper {
         centerPanel = new JPanel();
 
         namesList = new JBList<>(new CollectionListModel<>(
-                AppSettingsState.getInstance().templates.values().stream().toList()));
+                settingsState.templates.values().stream().toList()));
 
         namesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         namesList.addMouseListener(new MouseAdapter() {
@@ -88,7 +89,7 @@ public class TemplateSelectDialog extends DialogWrapper {
     @Override
     protected void doOKAction() {
         if (commitMessageI != null && project != null) {
-            commitMessageI.setCommitMessage(namesList.getModel().getElementAt(selectedIndex).fillContent(AppSettingsState.getInstance()));
+            commitMessageI.setCommitMessage(namesList.getModel().getElementAt(selectedIndex).fillContent(settingsState));
         }
         super.close(OK_EXIT_CODE);
     }

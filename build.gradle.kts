@@ -28,7 +28,7 @@ intellij {
     ) // Target IDE Platform
 
     plugins.set(
-        listOf()
+        listOf("Git4Idea")
     )
 }
 

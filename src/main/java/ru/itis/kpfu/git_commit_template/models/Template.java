@@ -1,6 +1,8 @@
 package ru.itis.kpfu.git_commit_template.models;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,8 +21,11 @@ public class Template {
 
     public String fillContent(AppSettingsState settingsState) {
         String res = new String(content);
-        for (Map.Entry<String, String> entry : settingsState.params.entrySet()) {
-            res = res.replace("$" + entry.getKey(), entry.getKey() + " - " + entry.getValue());
+        for (Map.Entry<String, String> entry : settingsState.localArgs.entrySet()) {
+            res = res.replace("$*" + entry.getKey(), entry.getKey() + " - " + entry.getValue());
+        }
+        for (Map.Entry<String, String> entry : settingsState.sysArgs.entrySet()) {
+            res = res.replace("$&" + entry.getKey(), entry.getKey() + " - " + entry.getValue());
         }
         return res;
     }
