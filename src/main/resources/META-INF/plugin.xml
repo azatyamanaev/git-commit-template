@@ -47,6 +47,10 @@
         com.intellij.modules.platform
     </depends>
 
+    <depends>
+        Git4Idea
+    </depends>
+
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions

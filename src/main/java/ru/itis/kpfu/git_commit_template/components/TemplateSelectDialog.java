@@ -1,9 +1,13 @@
 package ru.itis.kpfu.git_commit_template.components;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
@@ -18,6 +22,7 @@ import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
 import ru.itis.kpfu.git_commit_template.config.AppSettingsState;
 import ru.itis.kpfu.git_commit_template.models.Template;
+import ru.itis.kpfu.git_commit_template.util.GitHelper;
 
 public class TemplateSelectDialog extends DialogWrapper {
 
@@ -26,6 +31,7 @@ public class TemplateSelectDialog extends DialogWrapper {
     private int selectedIndex;
     private final CommitMessageI commitMessageI;
     private final AppSettingsState settingsState;
+    private JCheckBox addBranchNameCheckBox;
 
     @Getter
     private final Project project;
@@ -51,6 +57,7 @@ public class TemplateSelectDialog extends DialogWrapper {
     @Override
     public JComponent createCenterPanel() {
         centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
         namesList = new JBList<>(new CollectionListModel<>(
                 settingsState.templates.values().stream().toList()));
@@ -81,7 +88,16 @@ public class TemplateSelectDialog extends DialogWrapper {
         namesPane.setPreferredSize(new Dimension(200, 480));
 
         centerPanel.add(namesPane);
-        centerPanel.setPreferredSize(new Dimension(200, 500));
+
+        centerPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+
+        JPanel optionsPanel = new JPanel();
+        optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
+        optionsPanel.setLayout(new BorderLayout());
+        addBranchNameCheckBox = new JCheckBox("Add branch name");
+        optionsPanel.add(addBranchNameCheckBox);
+
+        centerPanel.add(optionsPanel);
 
         return centerPanel;
     }
@@ -89,7 +105,16 @@ public class TemplateSelectDialog extends DialogWrapper {
     @Override
     protected void doOKAction() {
         if (commitMessageI != null && project != null) {
-            commitMessageI.setCommitMessage(namesList.getModel().getElementAt(selectedIndex).fillContent(settingsState));
+            String commitMessage = namesList.getModel().getElementAt(selectedIndex).fillContent(settingsState);
+
+            if (addBranchNameCheckBox.isSelected()) {
+                String branchName = GitHelper.getBranchName(project);
+                if (branchName != null && !branchName.isEmpty()) {
+                    commitMessage = String.format("#%s %s", branchName, commitMessage);
+                }
+            }
+
+            commitMessageI.setCommitMessage(commitMessage);
         }
         super.close(OK_EXIT_CODE);
     }
