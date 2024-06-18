@@ -2,8 +2,6 @@ package ru.itis.kpfu.git_commit_template.components;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -28,7 +26,6 @@ public class TemplateSelectDialog extends DialogWrapper {
 
     private JPanel centerPanel;
     private JBList<Template> namesList;
-    private int selectedIndex;
     private final CommitMessageI commitMessageI;
     private final AppSettingsState settingsState;
     private JCheckBox addBranchNameCheckBox;
@@ -44,9 +41,9 @@ public class TemplateSelectDialog extends DialogWrapper {
         this.project = project;
         this.commitMessageI = commitMessageI;
         this.settingsState = AppSettingsState.getInstance();
-        this.settingsState.setSystemArgs();
+        this.settingsState.refreshSystemArgs();
 
-        super.setTitle("Saved templates");
+        super.setTitle("Saved Templates");
         super.setOKButtonText("Select");
         super.init();
     }
@@ -63,27 +60,9 @@ public class TemplateSelectDialog extends DialogWrapper {
                 settingsState.templates.values().stream().toList()));
 
         namesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        namesList.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 1) {
-                    selectedIndex = namesList.locationToIndex(e.getPoint());
-                    namesList.setSelectedIndex(selectedIndex);
-                }
-            }
-        });
-        namesList.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                int index = namesList.locationToIndex(e.getPoint());
-                if (index > -1) {
-                    namesList.setToolTipText(namesList.getModel().getElementAt(index).getContent());
-                }
-            }
-        });
 
         namesList.setMinimumSize(new Dimension(200, 480));
-
+        namesList.setSelectedIndex(0);
         JBScrollPane namesPane = new JBScrollPane(namesList);
         namesPane.setPreferredSize(new Dimension(200, 480));
 
@@ -103,9 +82,14 @@ public class TemplateSelectDialog extends DialogWrapper {
     }
 
     @Override
+    public @Nullable JComponent getPreferredFocusedComponent() {
+        return namesList;
+    }
+
+    @Override
     protected void doOKAction() {
         if (commitMessageI != null && project != null) {
-            String commitMessage = namesList.getModel().getElementAt(selectedIndex).fillContent(settingsState);
+            String commitMessage = namesList.getModel().getElementAt(namesList.getSelectedIndex()).fillContent(settingsState);
 
             if (addBranchNameCheckBox.isSelected()) {
                 String branchName = GitHelper.getBranchName(project);

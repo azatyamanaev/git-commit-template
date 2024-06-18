@@ -60,7 +60,6 @@ public class AppSettingsConfigurable implements Configurable {
     @Override
     public void reset() {
         AppSettingsState settings = getSettings();
-        settings.setSystemArgs();
         settingsComponent.updateContent(settings);
     }
 

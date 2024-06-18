@@ -73,6 +73,12 @@
                 text="Insert Commit Template">
             <add-to-group
                     group-id="Vcs.MessageActionGroup"/>
+            <keyboard-shortcut
+                    keymap="$default"
+                    first-keystroke="control alt INSERT"/>
+            <keyboard-shortcut
+                    keymap="Mac OS X"
+                    first-keystroke="control meta N"/>
         </action>
     </actions>
 </idea-plugin>
