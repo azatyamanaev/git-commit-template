@@ -48,4 +48,9 @@ public class GitHelper {
             return null;
         }
     }
+
+    public static String getBranchName(@Nullable Project project) {
+        GitRepository repository = getGitRepository(project);
+        return getBranchName(repository);
+    }
 }
