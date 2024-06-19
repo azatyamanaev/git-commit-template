@@ -6,19 +6,12 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.VerticalFlowLayout;
 import com.intellij.ui.CollectionListModel;
 import com.intellij.ui.DocumentAdapter;
 import com.intellij.ui.JBSplitter;
@@ -64,23 +57,22 @@ public class AppSettingsComponent {
     public AppSettingsComponent() {
 
         this.settingsState = AppSettingsState.getInstance();
-        this.settingsState.setSystemArgs();
+        this.settingsState.refreshSystemArgs();
 
         tabs = new JBTabbedPane();
         templatesPanel = FormBuilder.createFormBuilder()
-                                    .addComponent(createTemplateList(settingsState
-                                            .templates.values().stream().toList()), 0)
-                                    .addComponentFillVertically(new JPanel(), 1)
-                                    .getPanel();
+                .addComponent(createTemplateList(settingsState
+                        .templates.values().stream().toList()), 0)
+                .addComponentFillVertically(new JPanel(), 1)
+                .getPanel();
 
         localArgsModel = new ArgumentTableModel();
         localArgsPanel = new JPanel(new BorderLayout());
         localArgsPanel.add(createLocalArgsPanel(SystemHelper.getArgumentList(settingsState.localArgs)), BorderLayout.CENTER);
 
         systemArgsModel = new ArgumentTableModel();
-        systemArgsPanel = FormBuilder.createFormBuilder()
-                                     .addComponentFillVertically(createSystemArgsPanel(SystemHelper.getArgumentList(settingsState.sysArgs)), 0)
-                                     .getPanel();
+        systemArgsPanel = new JPanel(new BorderLayout());
+        systemArgsPanel.add(createSystemArgsPanel(SystemHelper.getArgumentList(settingsState.sysArgs)), BorderLayout.CENTER);
 
         tabs.add("templates", templatesPanel);
         tabs.add("local args", localArgsPanel);
@@ -98,7 +90,7 @@ public class AppSettingsComponent {
                 if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 1) {
                     selectedIndex = namesList.locationToIndex(e.getPoint());
                     namesList.setSelectedIndex(selectedIndex);
-                    Template value = (Template) namesList.getModel().getElementAt(selectedIndex);
+                    Template value = namesList.getModel().getElementAt(selectedIndex);
                     name.setEnabled(true);
                     name.setText(value.getName());
                     textArea.setEnabled(true);
@@ -123,9 +115,9 @@ public class AppSettingsComponent {
         namesPane.setMinimumSize(new Dimension(50, 342));
 
         JPanel namesContainer = FormBuilder.createFormBuilder()
-                                           .addComponent(decorator.createPanel(), 1)
-                                           .addComponent(namesPane, 2)
-                                           .getPanel();
+                .addComponent(decorator.createPanel(), 1)
+                .addComponent(namesPane, 2)
+                .getPanel();
 
         textArea = new JBTextArea();
         textArea.setText("");
@@ -143,7 +135,7 @@ public class AppSettingsComponent {
 
             @Override
             public void focusLost(FocusEvent e) {
-                Template selected = (Template) namesList.getModel().getElementAt(selectedIndex);
+                Template selected = namesList.getModel().getElementAt(selectedIndex);
                 selected.setContent(textArea.getText());
                 ((CollectionListModel<Template>) namesList.getModel()).setElementAt(selected, selectedIndex);
             }
@@ -182,15 +174,15 @@ public class AppSettingsComponent {
                     name.setText("Unnamed");
                 }
 
-                Template selected = (Template) namesList.getModel().getElementAt(selectedIndex);
+                Template selected = namesList.getModel().getElementAt(selectedIndex);
                 selected.setName(name.getText());
                 ((CollectionListModel<Template>) namesList.getModel()).setElementAt(selected, selectedIndex);
             }
         });
         JPanel templateContainer = FormBuilder.createFormBuilder()
-                                              .addLabeledComponent(new JBLabel("Name:"), name, 1, false)
-                                              .addComponent(templatePane)
-                                              .getPanel();
+                .addLabeledComponent(new JBLabel("Name:"), name, 1, false)
+                .addComponent(templatePane)
+                .getPanel();
 
         JBSplitter splitter = new JBSplitter();
         splitter.setProportion(0.3f);
@@ -211,12 +203,8 @@ public class AppSettingsComponent {
         localArgsTable.setIntercellSpacing(new Dimension(5, 0));
 
         ToolbarDecorator decorator = ToolbarDecorator.createDecorator(localArgsTable);
-        decorator.setAddAction(a -> {
-            localArgsModel.rows.add(new Argument("argument", "value"));
-        });
-        decorator.setRemoveAction(a -> {
-            localArgsModel.rows.remove(localArgsTable.getSelectedRow());
-        });
+        decorator.setAddAction(a -> localArgsModel.rows.add(new Argument("argument", "value")));
+        decorator.setRemoveAction(a -> localArgsModel.rows.remove(localArgsTable.getSelectedRow()));
 
         JBScrollPane paramsPane = new JBScrollPane(localArgsTable);
         paramsPane.setVisible(true);
@@ -233,26 +221,41 @@ public class AppSettingsComponent {
         ArgumentTableModel.updateTable(systemArgsModel, arguments);
         systemArgsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         systemArgsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        systemArgsTable.setCellSelectionEnabled(false);
-        systemArgsTable.setFocusable(false);
+        systemArgsTable.setCellSelectionEnabled(true);
         systemArgsTable.setIntercellSpacing(new Dimension(5, 0));
 
         ToolbarDecorator decorator = ToolbarDecorator.createDecorator(systemArgsTable);
-        decorator.setAddIcon(AllIcons.Actions.Refresh);
-        decorator.setAddActionName("Refresh");
         decorator.setAddAction(a -> {
-            settingsState.setSystemArgs();
-            ArgumentTableModel.updateTable(systemArgsModel, SystemHelper.getArgumentList(settingsState.sysArgs));
+            Map<String, String> vars = System.getenv();
+            var keys = vars.keySet().stream()
+                    .filter(key -> !settingsState.sysArgs.containsKey(key))
+                    .toArray();
+            // Create a dialog with a list of entries
+            String selectedValue = (String) JOptionPane.showInputDialog(
+                    null,
+                    "Select an entry:",
+                    "Entry Selection",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    keys,
+                    keys[0]
+            );
+
+            if (selectedValue != null) {
+                String val = vars.get(selectedValue);
+                settingsState.sysArgs.put(selectedValue, val);
+                systemArgsModel.rows.add(new Argument(selectedValue, val));
+            }
         });
-        decorator.disableRemoveAction();
+        decorator.setRemoveAction(a -> settingsState.sysArgs.remove(systemArgsModel.rows.remove(systemArgsTable.getSelectedRow()).getName()));
 
         JBScrollPane paramsPane = new JBScrollPane(systemArgsTable);
         paramsPane.setPreferredSize(new Dimension(700, 370));
 
         return FormBuilder.createFormBuilder()
-                          .addComponent(decorator.createPanel(), 1)
-                          .addComponent(paramsPane, 2)
-                          .getPanel();
+                .addComponent(decorator.createPanel(), 1)
+                .addComponent(paramsPane, 2)
+                .getPanel();
     }
 
     public void updateContent(AppSettingsState settings) {

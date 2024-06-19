@@ -1,14 +1,12 @@
 package ru.itis.kpfu.git_commit_template.models;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.itis.kpfu.git_commit_template.config.AppSettingsState;
+
+import java.util.Map;
 
 @Getter
 @Setter
@@ -20,7 +18,7 @@ public class Template {
     private String content;
 
     public String fillContent(AppSettingsState settingsState) {
-        String res = new String(content);
+        String res = content;
         for (Map.Entry<String, String> entry : settingsState.localArgs.entrySet()) {
             res = res.replace("$*" + entry.getKey(), entry.getKey() + " - " + entry.getValue());
         }
