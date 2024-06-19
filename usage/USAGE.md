@@ -22,11 +22,11 @@
   ![Commit window](../images/commit_window.png)
 
 2. При нажатии на нее откроется окно со списком указанных в настройках шаблонов
-  ![Commit templates window](../images/commit_templates_window.png)
+ 
 
 3. При выборе одного из шаблонов и нажатия Select шаблон будет вставлен как сообщение коммита
   ![Commit insert template](../images/commit_insert_template.png)
 
 4. При выборе одного из шаблонов и активирования чекбокса Add branch name шаблон будет вставлен как сообщение коммита и название ветки будет добавлено в начало коммита
-  ![Commit insert template with prefix](../images/commit_insert_template_with_prefix.png)
+  
 
