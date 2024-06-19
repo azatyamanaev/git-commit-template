@@ -29,5 +29,6 @@
 
 4. При выборе одного из шаблонов и активирования чекбокса Add branch name шаблон будет вставлен 
    как сообщение коммита и название ветки будет добавлено в начало коммита
+  
   ![Commit insert template with prefix(2)](../images/commit_insert_template_with_prefix.png)
 
