@@ -7,7 +7,7 @@ plugins {
 group =
     "ru.itis.kpfu"
 version =
-    "1.0.1"
+    "1.0.2"
 
 lombok {
     version ="1.18.22"
